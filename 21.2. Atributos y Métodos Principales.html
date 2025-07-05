@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Base de Datos - E-commerce</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 1000px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #e9ecef;
+        }
+        
+        .entity {
+            position: absolute;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .entity:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            border-color: #2980b9;
+        }
+        
+        .entity-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 5px;
+            padding: 5px;
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+        }
+        
+        .entity-attributes {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.3;
+        }
+        
+        .attributes-section {
+            margin-bottom: 8px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 10px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+        
+        .attribute-item {
+            margin-bottom: 2px;
+        }
+        
+        .method-item {
+            margin-bottom: 2px;
+            color: #27ae60;
+        }
+        
+        /* Posiciones de las entidades */
+        .categoria {
+            top: 20px;
+            left: 20px;
+            width: 180px;
+        }
+        
+        .producto-main {
+            top: 20px;
+            left: 250px;
+            width: 200px;
+        }
+        
+        .talla {
+            top: 20px;
+            left: 500px;
+            width: 160px;
+        }
+        
+        .color {
+            top: 200px;
+            left: 500px;
+            width: 160px;
+        }
+        
+        .item-cesta {
+            top: 350px;
+            left: 250px;
+            width: 180px;
+        }
+        
+        .cesta {
+            top: 350px;
+            left: 500px;
+            width: 220px;
+        }
+        
+        .producto-ref {
+            top: 560px;
+            left: 250px;
+            width: 180px;
+        }
+        
+        .administrador {
+            top: 200px;
+            left: 20px;
+            width: 180px;
+        }
+        
+        .producto-admin {
+            top: 430px;
+            left: 20px;
+            width: 180px;
+        }
+        
+        /* Líneas de relación */
+        .relationship {
+            position: absolute;
+            background: #e74c3c;
+            z-index: 1;
+        }
+        
+        .relationship-label {
+            position: absolute;
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            color: #e74c3c;
+            font-weight: bold;
+            border: 1px solid #e74c3c;
+        }
+        
+        /* Líneas horizontales y verticales */
+        .line-h {
+            height: 2px;
+        }
+        
+        .line-v {
+            width: 2px;
+        }
+        
+        /* Relaciones específicas */
+        .rel-cat-prod {
+            top: 78px;
+            left: 200px;
+            width: 50px;
+        }
+        
+        .rel-prod-talla {
+            top: 78px;
+            left: 450px;
+            width: 50px;
+        }
+        
+        .rel-prod-color {
+            top: 78px;
+            left: 450px;
+            width: 2px;
+            height: 180px;
+        }
+        
+        .rel-prod-color-h {
+            top: 258px;
+            left: 450px;
+            width: 50px;
+        }
+        
+        .rel-prod-item {
+            top: 198px;
+            left: 350px;
+            width: 2px;
+            height: 152px;
+        }
+        
+        .rel-item-cesta {
+            top: 408px;
+            left: 430px;
+            width: 70px;
+        }
+        
+        .rel-item-prodref {
+            top: 530px;
+            left: 350px;
+            width: 2px;
+            height: 30px;
+        }
+        
+        .rel-admin-prodadmin {
+            top: 410px;
+            left: 120px;
+            width: 2px;
+            height: 20px;
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 3px;
+            margin-right: 10px;
+        }
+        
+        .legend-rel {
+            background: #e74c3c;
+        }
+        
+        .legend-entity {
+            background: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ Diagrama de Base de Datos - Sistema E-commerce</h1>
+        
+        <div class="diagram-container">
+            <!-- Entidades -->
+            <div class="entity categoria">
+                <div class="entity-title">Categoría</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Atributos:</div>
+                        <div class="attribute-item">• idCategoria: String</div>
+                        <div class="attribute-item">• nombre: String</div>
+                    </div>
+                    <div class="attributes-section">
+                        <div class="section-title">Métodos:</div>
+                        <div class="method-item">• obtenerProductos()</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity producto-main">
+                <div class="entity-title">Producto</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Atributos:</div>
+                        <div class="attribute-item">• idProducto: String</div>
+                        <div class="attribute-item">• nombre: String</div>
+                        <div class="attribute-item">• descripcion: String</div>
+                        <div class="attribute-item">• precio: Decimal</div>
+                        <div class="attribute-item">• imagenURL: List&lt;String&gt;</div>
+                        <div class="attribute-item">• estado: String</div>
+                    </div>
+                    <div class="attributes-section">
+                        <div class="section-title">Métodos:</div>
+                        <div class="method-item">• verDetalle()</div>
+                        <div class="method-item">• actualizarStock()</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity talla">
+                <div class="entity-title">Talla</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Atributos:</div>
+                        <div class="attribute-item">• idTalla: String</div>
+                        <div class="attribute-item">• nombre: String</div>
+                    </div>
+                    <div class="attributes-section">
+                        <div class="section-title">Métodos:</div>
+                        <div class="method-item">• ninguno</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity color">
+                <div class="entity-title">Color</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Atributos:</div>
+                        <div class="attribute-item">• idColor: String</div>
+                        <div class="attribute-item">• nombre: String</div>
+                        <div class="attribute-item">• codigoHex: String</div>
+                    </div>
+                    <div class="attributes-section">
+                        <div class="section-title">Métodos:</div>
+                        <div class="method-item">• ninguno</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity item-cesta">
+                <div class="entity-title">ItemCesta</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Atributos:</div>
+                        <div class="attribute-item">• idItemCesta: String</div>
+                        <div class="attribute-item">• cantidad: Integer</div>
+                        <div class="attribute-item">• subtotal: Decimal</div>
+                    </div>
+                    <div class="attributes-section">
+                        <div class="section-title">Métodos:</div>
+                        <div class="method-item">• calcularSubtotal()</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity cesta">
+                <div class="entity-title">Cesta</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Atributos:</div>
+                        <div class="attribute-item">• idCesta: String</div>
+                        <div class="attribute-item">• fechaCreacion: Date</div>
+                        <div class="attribute-item">• totalItems: Integer</div>
+                        <div class="attribute-item">• totalCosto: Decimal</div>
+                    </div>
+                    <div class="attributes-section">
+                        <div class="section-title">Métodos:</div>
+                        <div class="method-item">• añadirItem(item)</div>
+                        <div class="method-item">• eliminarItem(item)</div>
+                        <div class="method-item">• actualizarCantidadItem()</div>
+                        <div class="method-item">• calcularTotalCesta()</div>
+                        <div class="method-item">• generarResumenPedido()</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity producto-ref">
+                <div class="entity-title">Producto (Referencia)</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Relación con ItemCesta</div>
+                        <div class="attribute-item">• idProducto: String</div>
+                        <div class="attribute-item">• nombre: String</div>
+                        <div class="attribute-item">• precio: Decimal</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity administrador">
+                <div class="entity-title">Administrador</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Atributos:</div>
+                        <div class="attribute-item">• idAdmin: String</div>
+                        <div class="attribute-item">• nombreUsuario: String</div>
+                        <div class="attribute-item">• contraseña: String</div>
+                        <div class="attribute-item">• email: String</div>
+                        <div class="attribute-item">• rol: String</div>
+                    </div>
+                    <div class="attributes-section">
+                        <div class="section-title">Métodos:</div>
+                        <div class="method-item">• autenticar()</div>
+                        <div class="method-item">• añadirProducto()</div>
+                        <div class="method-item">• editarProducto()</div>
+                        <div class="method-item">• eliminarProducto()</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="entity producto-admin">
+                <div class="entity-title">Producto (Gestión)</div>
+                <div class="entity-attributes">
+                    <div class="attributes-section">
+                        <div class="section-title">Relación con Admin</div>
+                        <div class="attribute-item">• idProducto: String</div>
+                        <div class="attribute-item">• nombre: String</div>
+                        <div class="attribute-item">• precio: Decimal</div>
+                        <div class="attribute-item">• idAdmin: String</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Líneas de relación -->
+            <div class="relationship line-h rel-cat-prod"></div>
+            <div class="relationship-label" style="top: 70px; left: 210px;">1:*</div>
+            
+            <div class="relationship line-h rel-prod-talla"></div>
+            <div class="relationship-label" style="top: 70px; left: 460px;">1:1</div>
+            
+            <div class="relationship line-v rel-prod-color"></div>
+            <div class="relationship line-h rel-prod-color-h"></div>
+            <div class="relationship-label" style="top: 250px; left: 460px;">1:*</div>
+            
+            <div class="relationship line-v rel-prod-item"></div>
+            <div class="relationship-label" style="top: 270px; left: 360px;">1:*</div>
+            
+            <div class="relationship line-h rel-item-cesta"></div>
+            <div class="relationship-label" style="top: 400px; left: 450px;">*:1</div>
+            
+            <div class="relationship line-v rel-item-prodref"></div>
+            <div class="relationship-label" style="top: 540px; left: 360px;">1:1</div>
+            
+            <div class="relationship line-v rel-admin-prodadmin"></div>
+            <div class="relationship-label" style="top: 415px; left: 130px;">1:*</div>
+            
+            <!-- Leyenda -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color legend-entity"></div>
+                    <span>Entidad</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-rel"></div>
+                    <span>Relación</span>
+                </div>
+                <div style="margin-top: 10px; font-weight: bold; color: #2c3e50;">
+                    <div style="color: #e74c3c; font-size: 10px;">ATRIBUTOS</div>
+                    <div style="color: #27ae60; font-size: 10px;">MÉTODOS</div>
+                    <div style="margin-top: 5px;">Cardinalidades:</div>
+                    1:1 - Uno a Uno<br>
+                    1:* - Uno a Muchos<br>
+                    *:1 - Muchos a Uno
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center; color: #666;">
+            <p><strong>Diagrama Entidad-Relación del Sistema de E-commerce</strong></p>
+            <p>Este diagrama muestra las relaciones entre las diferentes entidades del sistema, incluyendo productos, categorías, cestas de compra y administración.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Añadir interactividad a las entidades
+        document.querySelectorAll('.entity').forEach(entity => {
+            entity.addEventListener('click', function() {
+                // Añadir efecto de "seleccionado"
+                document.querySelectorAll('.entity').forEach(e => e.style.borderColor = '#3498db');
+                this.style.borderColor = '#e74c3c';
+                this.style.borderWidth = '3px';
+            });
+        });
+        
+        // Resetear selección al hacer clic en el fondo
+        document.querySelector('.diagram-container').addEventListener('click', function(e) {
+            if (e.target === this) {
+                document.querySelectorAll('.entity').forEach(entity => {
+                    entity.style.borderColor = '#3498db';
+                    entity.style.borderWidth = '2px';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
